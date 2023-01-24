@@ -76,5 +76,7 @@ int main(int argc, char *argv[])
 		myFile << topTenPrimes[i] << " ";
 	}
 	
-	myFile.close();	
+	myFile.close();
+
+	return 0;	
 }
