@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 
 	// Only go up to sqrt of limit
 	// Only check odds since even numbers are not prime
-    for (int i = 3; i * i <= LIMIT; i += 2)
-    {
+	for (int i = 3; i * i <= LIMIT; i += 2)
+	{
 		// Use parallel for loop to check if each number is prime with necessary 8 threads
 		// Mark each multiple as non-prime
 		if (isPrimeList[i] == 1)
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 				isPrimeList[j] = 0;
 			}
 		}
-    }
+	}
 
 	long long sumOfPrimes = 0;
 	int numPrimes = 0;
@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
 	std::ofstream myFile("primes.txt");
+
 	myFile << duration.count() << "ms ";
 	myFile << numPrimes << " ";
 	myFile << sumOfPrimes << std::endl;
@@ -74,5 +75,6 @@ int main(int argc, char *argv[])
 	{
 		myFile << topTenPrimes[i] << " ";
 	}
+	
 	myFile.close();	
 }
