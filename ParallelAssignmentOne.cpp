@@ -6,21 +6,27 @@
 #include <chrono>
 #include <vector>
 #include <fstream>
-#include <math.h>
+
+// Limited to 8 threads
+#define NUM_THREADS 8
+// Limit of 10^8
+#define LIMIT 100000000
 
 int main(int argc, char *argv[])
 {
 	// Start timer
 	auto start = std::chrono::high_resolution_clock::now();
 
-	// Limited to 8 threads
-	const int NUM_THREADS = 8;
-	// Limit of 10^8
-	const int LIMIT = 100000000;
-
 	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 1 for prime
-	// Size is 1 greater than limit to account for lack of 0 index
-	std::vector<int> isPrimeList(LIMIT + 1, 1);
+	// Size is 1 greater than limit to account for including limit in list
+	std::vector<int> isPrimeList(LIMIT + 1);
+	// Mark all odd numbers as prime
+	for (int i = 1; i <= LIMIT; i += 2)
+	{
+		isPrimeList[i] = 1;
+	}
+	// Mark 2 as prime
+	isPrimeList[2] = 1;
 
 	// Only go up to sqrt of limit
 	// Only check odds since even numbers are not prime
@@ -28,12 +34,12 @@ int main(int argc, char *argv[])
     {
 		// Use parallel for loop to check if each number is prime with necessary 8 threads
 		// Mark each multiple as non-prime
-		if (isPrimeList[i / 2] == 1)
+		if (isPrimeList[i] == 1)
 		{
 			#pragma omp parallel for num_threads(NUM_THREADS)
-			for (int j = i * i; j <= LIMIT; j += 2 * i)
+			for (int j = i * i; j <= LIMIT; j += i * 2)
 			{
-				isPrimeList[j / 2] = 0;
+				isPrimeList[j] = 0;
 			}
 		}
     }
@@ -43,7 +49,7 @@ int main(int argc, char *argv[])
 	int topTenPrimes[10];
 
 	// Iterate backwards through list to start at greatest primes for top ten primes
-	for (int i = LIMIT; i >= 2; i--)
+	for (int i = LIMIT - 1; i >= 2; i--)
 	{
 		if (isPrimeList[i] == 1)
 		{
