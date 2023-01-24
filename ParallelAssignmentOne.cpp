@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	// Start timer
 	auto start = std::chrono::high_resolution_clock::now();
 
-	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 1 for prime
+	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 0 for prime
 	// Size is 1 greater than limit to account for including limit in list
 	std::vector<int> isPrimeList(LIMIT + 1);
 	// Mark all odd numbers as prime
@@ -27,6 +27,9 @@ int main(int argc, char *argv[])
 	}
 	// Mark 2 as prime
 	isPrimeList[2] = 1;
+
+	// Thread-local storage for time taken by each thread
+	std::vector<double> threadTimes(NUM_THREADS);
 
 	// Only go up to sqrt of limit
 	// Only check odds since even numbers are not prime
@@ -39,7 +42,12 @@ int main(int argc, char *argv[])
 			#pragma omp parallel for num_threads(NUM_THREADS)
 			for (int j = i * i; j <= LIMIT; j += i * 2)
 			{
+				// Use OpenMP's built in omp_get_wtime() to get time taken by each thread
+				double startTime = omp_get_wtime();
 				isPrimeList[j] = 0;
+				double endTime = omp_get_wtime();
+				// Add time taken by each thread to thread-local storage
+				threadTimes[omp_get_thread_num()] += endTime - startTime;
 			}
 		}
     }
@@ -73,6 +81,12 @@ int main(int argc, char *argv[])
 	for (int i = 9; i >= 0; i--)
 	{
 		myFile << topTenPrimes[i] << " ";
+	}
+	myFile << std::endl;
+	// Print out thread times
+	for (int i = 0; i < NUM_THREADS; i++)
+	{
+		myFile << "Thread " << i << " took " << threadTimes[i] << " seconds." << std::endl;
 	}
 	myFile.close();	
 }
