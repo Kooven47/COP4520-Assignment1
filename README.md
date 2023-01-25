@@ -5,7 +5,7 @@ It tests numbers from 1 to 10^8 and uses 8 threads.
 
 ## Problem 1 (100 points) 
 Your non-technical manager assigns you the task to find all primes between 1 and 
-108.  The assumption is that your company is going to use a parallel machine that 
+10^8.  The assumption is that your company is going to use a parallel machine that 
 supports eight concurrent threads. Thus, in your design you should plan to spawn 8 
 threads that will perform the necessary computation. Your boss does not have a strong 
 technical background but she is a reasonable person. Therefore, she expects to see that 
