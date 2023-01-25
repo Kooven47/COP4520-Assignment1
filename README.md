@@ -31,8 +31,7 @@ the total number of primes found and the sum of all primes found.
 threads complete.
 
 ## Compilation Instructions
-VERIFY HERE
-<br> g++ ParallelAssignmentOne.cpp -std=c++2a -fopenmp
+g++ -o ParallelAssignmentOne -std=c++2a -fopenmp ParallelAssignmentOne.cpp
 <br> ./ParallelAssignmentOne
 
 ## Approach and Experimental Evaluation
@@ -40,16 +39,16 @@ My current approach involves using the Sieve of Eratosthenes, but optimized for 
 I fill an array with size 10^8 with 0s, with each index representing the primality of that number, marking them as not prime.
 I then mark every odd number, as well as 2, with 1 (prime).
 I loop from 3, incrementing by 2 to only consider odd numbers, up to the square root of 10^8. In that loop, if the current number is marked as prime, I mark all of its multiples as nonprime, going from that number squared up to 10^8, incrementing by that number times 2 every time. This inner loop is what I focused on parallelizing, utilizing all 8 threads equally. 
-The execution time for this method is about 1.2 seconds on my computer
+<br> The execution time for this method is about 1.2 seconds on my computer
 
 Previously, I had the same approach but checking all numbers rather than just odds.
-The execution time for this method was about 1.4 seconds on my computer.
+<br> The execution time for this method was about 1.4 seconds on my computer.
 
-This was the first time where I searced for better priamlity testing and came across the Sieve of Eratosthenes and decided to implement it. Before, I would always execute the inner loop and then check with an if statement for the inner number being prime. This led to a lot of unnecessary work/looping.
-The execution time for this method was about 3.0 seconds on my computer.
+This was the first time where I searced for better primality testing and came across the Sieve of Eratosthenes and decided to implement it. Before, I would always execute the inner loop and then check with an if statement for the inner number being prime. This led to a lot of unnecessary work/looping.
+<br> The execution time for this method was about 3.0 seconds on my computer.
 
-The first approach I had was the classic looping until sqrt(n) for every integer to check if it was prime. This was very slow, especially since it considered even numbers and other numbers that are "obviously" prime.
-The execution time for this method was about INSERT HERE seconds on my computer.
+The first approach I had was the classic looping until sqrt(n) for every integer to check if it was prime. This was EXTREMELY slow, especially since it considered even numbers and other numbers that are "obviously" prime.
+<br> The execution time for this method was about 19 minutes on my computer.
 
 ## Proof of Correctness and Equal Utilization
 The Sieve of Eratosthenes is a well-known and proven method for finding prime numbers. My odd only variation is trivially correct because every even number is divisible by 2, and therefore not prime (except for 2).
@@ -62,7 +61,8 @@ The Sieve of Eratosthenes is a well-known and proven method for finding prime nu
 - Then ab > sqrt(n) * sqrt(n) = n, which is a contradiction. 
 - So either a <= sqrt(n) or b <= sqrt(n).
 - Thus, n has a divisor less than sqrt(n).
+
 Since for any number n in the list, we are looking all prime numbers up to sqrt(n), we are indeed separating all composite numbers. Hence, Sieve of Eratosthenes generates all primes numbers less than the upper limit.
 
-My proof of equal utilization can be found in the Thread-Timing branch, where I use OpenMP's built in functions to time and get the current thread being used to store the total time taken from each thread in thread-local storage. Here is a picture from one of the runs showing how close the execution times are from each thread:
-INSERT PICTURE HERE
+<br> My proof of equal utilization can be found in the Thread-Timing branch, where I use OpenMP's built in functions to time and get the current thread being used to store the total time taken from each thread in thread-local storage. Here is a picture from one of the runs showing how close the execution times are from each thread: (In this example, the difference between the lowest execution time and highest execution time is only 1.57%).
+![image](https://user-images.githubusercontent.com/74631846/214456841-3d38f1bb-b713-4574-91a2-27f4f7316e89.png)
