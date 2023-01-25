@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 
 	// Only go up to sqrt of limit
 	// Only check odds since even numbers are not prime
-    for (int i = 3; i * i <= LIMIT; i += 2)
-    {
+	for (int i = 3; i * i <= LIMIT; i += 2)
+	{
 		// Use parallel for loop to check if each number is prime with necessary 8 threads
 		// Mark each multiple as non-prime
 		if (isPrimeList[i] == 1)
@@ -50,14 +50,14 @@ int main(int argc, char *argv[])
 				threadTimes[omp_get_thread_num()] += endTime - startTime;
 			}
 		}
-    }
+	}
 
 	long long sumOfPrimes = 0;
 	int numPrimes = 0;
 	int topTenPrimes[10];
 
 	// Iterate backwards through list to start at greatest primes for top ten primes
-	for (int i = LIMIT - 1; i >= 2; i--)
+	for (int i = LIMIT; i >= 2; i--)
 	{
 		if (isPrimeList[i] == 1)
 		{
@@ -88,5 +88,8 @@ int main(int argc, char *argv[])
 	{
 		myFile << "Thread " << i << " took " << threadTimes[i] << " seconds." << std::endl;
 	}
+
 	myFile.close();	
+
+	return 0;
 }
