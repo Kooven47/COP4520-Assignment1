@@ -20,8 +20,9 @@ int main(int argc, char *argv[])
 	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 1 for prime
 	// Size is 1 greater than limit to account for including limit in list
 	std::vector<int> isPrimeList(LIMIT + 1);
-	// Mark all odd numbers as prime
-	for (int i = 1; i <= LIMIT; i += 2)
+	// Mark all odd numbers (except for 1) as prime to start off with using 8 threads
+	#pragma omp parallel for num_threads(NUM_THREADS)
+	for (int i = 3; i <= LIMIT; i += 2)
 	{
 		isPrimeList[i] = 1;
 	}
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 	// Only check odds since even numbers are not prime
 	for (int i = 3; i * i <= LIMIT; i += 2)
 	{
-		// Use parallel for loop to check if each number is prime with necessary 8 threads
+		// Use parallelization for loop to check if each number is prime with necessary 8 threads
 		// Mark each multiple as non-prime
 		if (isPrimeList[i] == 1)
 		{
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
 	int topTenPrimes[10];
 
 	// Iterate backwards through list to start at greatest primes for top ten primes
-	for (int i = LIMIT - 1; i >= 2; i--)
+	for (int i = LIMIT; i >= 2; i--)
 	{
 		if (isPrimeList[i] == 1)
 		{
