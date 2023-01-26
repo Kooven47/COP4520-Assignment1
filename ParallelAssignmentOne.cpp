@@ -20,16 +20,23 @@ int main(int argc, char *argv[])
 	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 0 for prime
 	// Size is 1 greater than limit to account for including limit in list
 	std::vector<int> isPrimeList(LIMIT + 1);
-	// Mark all odd numbers as prime
-	for (int i = 1; i <= LIMIT; i += 2)
-	{
-		isPrimeList[i] = 1;
-	}
-	// Mark 2 as prime
-	isPrimeList[2] = 1;
 
 	// Thread-local storage for time taken by each thread
 	std::vector<double> threadTimes(NUM_THREADS);
+
+	// Mark all odd numbers (except for 1) as prime to start off with, using 8 threads
+	#pragma omp parallel for num_threads(NUM_THREADS)
+	for (int i = 3; i <= LIMIT; i += 2)
+	{
+		// Use OpenMP's built in omp_get_wtime() to get time taken by each thread
+		double startTime = omp_get_wtime();
+		isPrimeList[i] = 1;
+		double endTime = omp_get_wtime();
+		// Add time taken by each thread to thread-local storage
+		threadTimes[omp_get_thread_num()] += endTime - startTime;
+	}
+	// Mark 2 as prime
+	isPrimeList[2] = 1;
 
 	// Only go up to sqrt of limit
 	// Only check odds since even numbers are not prime
