@@ -50,7 +50,9 @@ int main(int argc, char *argv[])
 	int numPrimes = 0;
 	int topTenPrimes[10];
 
-	// Iterate backwards through list to start at greatest primes for top ten primes
+	// Iterate backwards through list to start at greatest primes for top ten primes, using 8 threads
+	// Reduction clause due to shared data, don't want race conditions
+	#pragma omp parallel for num_threads(NUM_THREADS) reduction(+:sumOfPrimes, numPrimes)
 	for (int i = LIMIT; i >= 2; i--)
 	{
 		if (isPrimeList[i] == 1)
