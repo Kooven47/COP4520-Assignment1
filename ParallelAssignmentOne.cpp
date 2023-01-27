@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
 	// Start timer
 	auto start = std::chrono::high_resolution_clock::now();
 
-	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 1 for prime
+	// Create a list of 1s and 0s to represent if a number is prime or not, initialized to 0 for not prime
 	// Size is 1 greater than limit to account for including limit in list
 	std::vector<int> isPrimeList(LIMIT + 1);
+	
 	// Mark all odd numbers (except for 1) as prime to start off with using 8 threads
 	#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 3; i <= LIMIT; i += 2)
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
 	// Only check odds since even numbers are not prime
 	for (int i = 3; i * i <= LIMIT; i += 2)
 	{
-		// Use parallelization for loop to check if each number is prime with necessary 8 threads
+		// Use parallel for loop to check if each number is prime with necessary 8 threads
 		// Mark each multiple as non-prime
 		if (isPrimeList[i] == 1)
 		{
