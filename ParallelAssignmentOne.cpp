@@ -63,9 +63,13 @@ int main(int argc, char *argv[])
 	int numPrimes = 0;
 	int topTenPrimes[10];
 
-	// Iterate backwards through list to start at greatest primes for top ten primes
+	// Iterate backwards through list to start at greatest primes for top ten primes, using 8 threads
+	// Reduction clause due to shared data, don't want race conditions
+	#pragma omp parallel for num_threads(NUM_THREADS) reduction(+:sumOfPrimes, numPrimes)
 	for (int i = LIMIT; i >= 2; i--)
 	{
+		// Use OpenMP's built in omp_get_wtime() to get time taken by each thread
+		double startTime = omp_get_wtime();
 		if (isPrimeList[i] == 1)
 		{
 			sumOfPrimes += i;
@@ -75,6 +79,9 @@ int main(int argc, char *argv[])
 				topTenPrimes[numPrimes - 1] = i;
 			}
 		}
+		double endTime = omp_get_wtime();
+		// Add time taken by each thread to thread-local storage
+		threadTimes[omp_get_thread_num()] += endTime - startTime;
 	}
 
 	auto end = std::chrono::high_resolution_clock::now();
