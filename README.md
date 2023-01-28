@@ -48,7 +48,7 @@ Afterwards, I decided to only consider odd numbers. I initially mark 2 and all o
 <br> The execution time for this method was about 1.2 seconds on my computer.
 
 Then, I decided to implement multithreading for the initialization of the odd numbers as prime, which was only a slight improvement.
-<br> The execution time for this method is about 1.1 seconds on my computer.
+<br> The execution time for this method was about 1.1 seconds on my computer.
 
 Finally, I also implemented multithreading for the final iterating, which sums up everything and keeps track of the number of primes found. I made sure to use a reduction clause for this due to the shared data, and that kept me safe from race conditions. I did have to move my top ten prime counter outside of the multithreaded for loop to completely avoid race conditions, however.
 <br> The execution time for this method is about 0.8 seconds on my computer.
