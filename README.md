@@ -35,10 +35,10 @@ g++ -o ParallelAssignmentOne -fopenmp ParallelAssignmentOne.cpp
 <br> ./ParallelAssignmentOne
 
 ## Approach and Experimental Evaluation
-The first approach I had was the primality test on wikipedia (https://en.wikipedia.org/wiki/Primality_test#C,_C++,_C#_&_D) for every integer to check if it was prime. This was EXTREMELY slow, especially since it considered even numbers and other numbers that are "obviously" prime. I was using 8 threads for the for loop of the isPrime function I implemented, if it was reached.
+The first approach I had was the [primality test on Wikipedia](https://en.wikipedia.org/wiki/Primality_test#C,_C++,_C#_&_D) for every integer to check if it was prime. This was EXTREMELY slow, especially since it considered even numbers and other numbers that are "obviously" prime. I was using 8 threads for the for loop of the isPrime function I implemented, if it was reached.
 <br> The execution time for this method was about 19 minutes on my computer.
 
-Then, I searched for better primality testing and came across the Sieve of Eratosthenes and decided to implement it. I fill an array with size 10^8 with 1s, with each index representing the primality of that number, marking them as prime. I loop from 2 to the square root of 10^8. In that loop, if the current number is marked as prime, I mark all of its multiples as nonprime, going from that number squared up to 10^8, incrementing by that number every time. This inner loop is what I focused on parallelizing, utilizing all 8 threads equally.
+Then, I searched for better primality testing and came across the Sieve of Eratosthenes and decided to implement it. I filled a bool vector with size 10^8 with trues, with each index representing the primality of that number, marking them as prime. I loop from 2 to the square root of 10^8. In that loop, if the current number is marked as prime, I mark all of its multiples as nonprime, going from that number squared up to 10^8, incrementing by that number every time. This inner loop is what I focused on parallelizing, utilizing all 8 threads equally.
 <br> The execution time for this method was about 2.6 seconds on my computer.
 
 Next, I switched from a bool vector to store everything to an int vector. I thought the bool would be faster originally due to less memory usage, but I found it was slower and not thread-safe.
