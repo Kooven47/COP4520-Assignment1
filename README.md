@@ -31,7 +31,7 @@ the total number of primes found and the sum of all primes found.
 threads complete.
 
 ## Compilation Instructions
-g++ -o ParallelAssignmentOne -std=c++2a -fopenmp ParallelAssignmentOne.cpp
+g++ -o ParallelAssignmentOne -fopenmp ParallelAssignmentOne.cpp
 <br> ./ParallelAssignmentOne
 
 ## Approach and Experimental Evaluation
