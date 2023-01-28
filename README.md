@@ -47,8 +47,11 @@ Next, I switched from a bool vector to store everything to an int vector. I thou
 Afterwards, I decided to only consider odd numbers. I initially mark 2 and all odd numbers except for 1 as prime. I loop from 3 to the square root of 10^8, incrementing by 2 each time.
 <br> The execution time for this method was about 1.2 seconds on my computer.
 
-Finally, I decided to implement multithreading for the initialization of the odd numbers as prime, which was only a slight improvement.
+Then, I decided to implement multithreading for the initialization of the odd numbers as prime, which was only a slight improvement.
 <br> The execution time for this method is about 1.1 seconds on my computer.
+
+Finally, I also implemented multithreading for the final iterating, which sums up everything and keeps track of the number of primes found. I made sure to use a reduction clause for this due to the shared data, and that kept me safe from race conditions. I did have to move my top ten prime counter outside of the multithreaded for loop to completely avoid race conditions, however.
+<br> The execution time for this method is about 0.8 seconds on my computer.
 
 ## Proof of Correctness and Equal Utilization
 The Sieve of Eratosthenes is a well-known and proven method for finding prime numbers. My odd only variation is trivially correct because every even number is divisible by 2, and therefore not prime (except for 2).
@@ -64,6 +67,5 @@ The Sieve of Eratosthenes is a well-known and proven method for finding prime nu
 
 Since for any number n in the list, we are looking all prime numbers up to sqrt(n), we are indeed separating all composite numbers. Hence, Sieve of Eratosthenes generates all primes numbers less than the upper limit.
 
-<br> My proof of equal utilization can be found in the Thread-Timing branch, where I use OpenMP's built in functions to time and get the current thread being used to store the total time taken from each thread in thread-local storage. Here is a picture from one of the runs showing how close the execution times are from each thread: (Note that the overall execution time is greatly increased due to the constant timing for each thread. The key point is that the difference between the lowest execution time and highest execution time is only 0.81%, highlighting how equally spread out the work is between the 8 threads).
-![image](https://user-images.githubusercontent.com/74631846/214987164-58e0fd81-05b3-4ef4-805f-b98c31b769c5.png)
-
+<br> My proof of equal utilization can be found in the Thread-Timing branch, where I use OpenMP's built in functions to time and get the current thread being used to store the total time taken from each thread in thread-local storage. Here is a picture from one of the runs showing how close the execution times are from each thread: (Note that the overall execution time is greatly increased due to the constant timing for each thread. The key point is that the difference between the lowest execution time and highest execution time is only 0.68% in this example, highlighting how equally spread out the work is between the 8 threads).
+![image](https://user-images.githubusercontent.com/74631846/215229890-5dcad054-c40b-4c04-a44d-5ec094f8054f.png)
