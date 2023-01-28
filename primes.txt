@@ -1,10 +1,10 @@
-8175ms 5761455 279209790387276
-99999787 99999821 99999827 99999839 99999847 74999863 62499893 62499923 49999921 74999959 
-Thread 0 took 1.95074 seconds.
-Thread 1 took 1.96227 seconds.
-Thread 2 took 1.96191 seconds.
-Thread 3 took 1.95804 seconds.
-Thread 4 took 1.95052 seconds.
-Thread 5 took 1.95421 seconds.
-Thread 6 took 1.95742 seconds.
-Thread 7 took 1.94279 seconds.
+8210ms 5761455 279209790387276
+99999787 99999821 99999827 99999839 99999847 99999931 99999941 99999959 99999971 99999989 
+Thread 0 took 1.95872 seconds.
+Thread 1 took 1.95287 seconds.
+Thread 2 took 1.95087 seconds.
+Thread 3 took 1.96054 seconds.
+Thread 4 took 1.94811 seconds.
+Thread 5 took 1.95166 seconds.
+Thread 6 took 1.96139 seconds.
+Thread 7 took 1.96005 seconds.
