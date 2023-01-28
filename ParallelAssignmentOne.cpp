@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
 		{
 			sumOfPrimes += i;
 			numPrimes++;
-
 		}
 		double endTime = omp_get_wtime();
 		// Add time taken by each thread to thread-local storage
