@@ -50,19 +50,27 @@ int main(int argc, char *argv[])
 	int numPrimes = 0;
 	int topTenPrimes[10];
 
-	// Iterate backwards through list to start at greatest primes for top ten primes, using 8 threads
 	// Reduction clause due to shared data, don't want race conditions
 	#pragma omp parallel for num_threads(NUM_THREADS) reduction(+:sumOfPrimes, numPrimes)
-	for (int i = LIMIT; i >= 2; i--)
+	for (int i = 2; i <= LIMIT; i++)
 	{
 		if (isPrimeList[i] == 1)
 		{
 			sumOfPrimes += i;
 			numPrimes++;
-			if (numPrimes <= 10)
-			{
-				topTenPrimes[numPrimes - 1] = i;
-			}
+		}
+	}
+
+	// Get top ten elements from the array, which is already sorted
+	// Had to keep separate from previous loop since it was not possible to use reduction clause
+	// Occurs very fast, so no need for multithreading
+	// Iterate backwards through list to start at greatest primes for top ten primes
+	for (int i = LIMIT, n = 10; i >= 2 && n > 0; i--)
+	{
+		if (isPrimeList[i] == 1)
+		{
+			topTenPrimes[n - 1] = i;
+			n--;
 		}
 	}
 
@@ -74,8 +82,7 @@ int main(int argc, char *argv[])
 	myFile << duration.count() << "ms ";
 	myFile << numPrimes << " ";
 	myFile << sumOfPrimes << std::endl;
-	// Iterate backwards through top ten primes to go from lowest to highest
-	for (int i = 9; i >= 0; i--)
+	for (int i = 0; i < 10; i++)
 	{
 		myFile << topTenPrimes[i] << " ";
 	}
